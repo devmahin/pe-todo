@@ -54,3 +54,19 @@ function editTodo (id){
     inputVal.value = editval;
     addTodo.innerText = "Edit Toto";
 }
+
+
+// seacrch
+const search = document.querySelector("#search")
+let tr = document.querySelectorAll(".allTodo tr")
+search.addEventListener("input", (e) => {
+     let searchVal = e.target.value.toLocaleLowerCase()
+     allTodo.innerHTML = "";
+     tr.forEach((val,index)=> {
+        let td_val = val.querySelectorAll("td")[0]
+        if(td_val.innerText.toLocaleLowerCase().indexOf(searchVal) > -1){
+            allTodo.appendChild(val)
+        }
+     })
+
+})
