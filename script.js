@@ -68,5 +68,12 @@ search.addEventListener("input", (e) => {
             allTodo.appendChild(val)
         }
      })
+     if(allTodo.innerHTML === ""){
+        allTodo.innerHTML = `<h2 class="p-3">todo search for not match ...</h2>`;
+     }
 
 })
+
+
+
+// pagination
