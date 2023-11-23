@@ -87,27 +87,37 @@ displayPagination()
 function displayPagination (){
     let start =  (pageNum - 1) * record_per_page ;
     let endIndex = start + (record_per_page - 1)
-    console.log(endIndex)
     if(endIndex >= totalTodoLength){
-        endIndex = totalTodoLength - 1
+        endIndex = totalTodoLength - 1;
     }
     let statement = "";
     for(i = start; i<= endIndex; i++){
-        statement += `<tr> ${tr2[i].innerHTML} </tr>`
-
+        statement += `<tr> ${tr2[i].innerHTML} </tr>`;
     }
     allTodo.innerHTML = statement
     document.querySelectorAll(".daynamic").forEach(val => {
-        console.log(val)
-        val.classList.remove("active")
-
+        val.classList.remove("active");
     })
-    document.getElementById(`page${pageNum}`).classList.add("active")
+    document.getElementById(`page${pageNum}`).classList.add("active");
+    if(pageNum == 1){
+        document.getElementById("prev").classList.add("disabled")
+    }else{
+        document.getElementById("prev").classList.remove("disabled")
+
+    }
+    if(pageNum == totalpage){
+        document.getElementById("next").classList.add("disabled")
+    }else{
+        document.getElementById("next").classList.remove("disabled")
+
+    }
+    
+    document.getElementById("allTodoShow").innerHTML = `Showing ${start + 1} of ${endIndex+1} total > ${totalTodoLength}`;
 }
 
 function pegination(){
-  let prev = `<li class="page-item"><a class="page-link" onclick="prevBtn()" href="#">Previous</a></li>`
-  let next =`<li class="page-item"><a class="page-link" onclick="nextBtn()" href="#">Next</a></li>`
+  let prev = `<li class="page-item"><a class="page-link" id="prev" onclick="prevBtn()" href="#">Previous</a></li>`
+  let next =`<li class="page-item"><a class="page-link" id="next" onclick="nextBtn()" href="#">Next</a></li>`
   let btn = "";
   let activity = "";
 
@@ -134,7 +144,10 @@ function prevBtn (){
 const selectedOption = document.getElementById("selectedOption")
 
 selectedOption.addEventListener("change",(val,index) => {
+    // if(totalTodoLength >= 5 || totalTodoLength >= 10 || totalTodoLength > 20){
+    // }
     record_per_page = +selectedOption.value
+
     totalpage = Math.ceil(totalTodoLength / record_per_page)
     pegination()
     displayPagination()
