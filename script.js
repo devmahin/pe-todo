@@ -58,7 +58,7 @@ function editTodo (id){
 
 // seacrch
 const search = document.querySelector("#search")
-let tr = document.querySelectorAll(".allTodo tr")
+const tr = document.querySelectorAll(".allTodo tr")
 search.addEventListener("input", (e) => {
      let searchVal = e.target.value.toLocaleLowerCase()
      allTodo.innerHTML = "";
@@ -77,3 +77,65 @@ search.addEventListener("input", (e) => {
 
 
 // pagination
+const tr2 = document.querySelectorAll(".allTodo tr")
+let pageNum = 1;
+let record_per_page = 10;
+let  totalTodoLength = tr2.length
+let totalpage = Math.ceil(totalTodoLength / record_per_page)
+pegination()
+displayPagination()
+function displayPagination (){
+    let start =  (pageNum - 1) * record_per_page ;
+    let endIndex = start + (record_per_page - 1)
+    console.log(endIndex)
+    if(endIndex >= totalTodoLength){
+        endIndex = totalTodoLength - 1
+    }
+    let statement = "";
+    for(i = start; i<= endIndex; i++){
+        statement += `<tr> ${tr2[i].innerHTML} </tr>`
+
+    }
+    allTodo.innerHTML = statement
+    document.querySelectorAll(".daynamic").forEach(val => {
+        console.log(val)
+        val.classList.remove("active")
+
+    })
+    document.getElementById(`page${pageNum}`).classList.add("active")
+}
+
+function pegination(){
+  let prev = `<li class="page-item"><a class="page-link" onclick="prevBtn()" href="#">Previous</a></li>`
+  let next =`<li class="page-item"><a class="page-link" onclick="nextBtn()" href="#">Next</a></li>`
+  let btn = "";
+  let activity = "";
+
+   for(i = 1; i <= totalpage; i++){
+    if(i == 1){
+        activity = "active";
+    }else{
+        activity ="";
+    }
+    btn +=`<li class="page-item daynamic ${activity}" id="page${i}"><a class="page-link" href="#">${i}</a></li>`
+   }
+    const paginationId = document.getElementById("paginationId")
+    paginationId.innerHTML = `${prev} ${btn} ${next}`
+}
+
+function nextBtn (){
+    pageNum++;
+    displayPagination()
+}
+function prevBtn (){
+    pageNum--;
+    displayPagination()
+}
+const selectedOption = document.getElementById("selectedOption")
+
+selectedOption.addEventListener("change",(val,index) => {
+    record_per_page = +selectedOption.value
+    totalpage = Math.ceil(totalTodoLength / record_per_page)
+    pegination()
+    displayPagination()
+})
